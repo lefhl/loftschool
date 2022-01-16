@@ -11,4 +11,5 @@ jobs:
       with:
         username: 'lefhl'
         reponame: 'loftschool'
+        useyarn: true
         token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
