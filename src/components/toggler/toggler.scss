@@ -1,0 +1,13 @@
+.button {
+	display: flex;
+	align-items: center;
+	svg {
+		transform: scale(-1);
+		transition: transform .3s ease;
+		width: 16px;
+	}
+	&.active svg {
+		transform: scale(1);
+	}
+}
+
