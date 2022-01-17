@@ -55,9 +55,6 @@ export default {
 
 <style lang="scss">
   .post {
-    & + & {
-      margin-top: 24px;
-    }
     &__user {
       margin-bottom: 16px;
     }

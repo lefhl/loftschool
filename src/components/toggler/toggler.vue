@@ -9,6 +9,7 @@
 import Icon from './../../assets/icons/icon.vue'
 export default {
   name: 'toggler',
+  emits: ['toggle'],
   components: {
     icon: Icon
   },
