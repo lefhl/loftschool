@@ -8,10 +8,9 @@
 		width: 80px;
 		height: 80px;
 		border: 2px solid #A6328D;
-		outline-offset: 6px;
 		margin-bottom: 10px;
 		box-sizing: content-box;
-		padding: 6px;
+		padding: 3px;
 		transition: border-color .2s ease;
 		&:hover {
 			border-color: transparent;
