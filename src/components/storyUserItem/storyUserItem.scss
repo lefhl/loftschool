@@ -1,9 +1,12 @@
 .story {
 	text-align: center;
+	word-break: break-all;
 	cursor: pointer;
+	display: inline-block;
 
 
 	&__img {
+		display: inline-block;
 		border-radius: 50%;
 		width: 80px;
 		height: 80px;

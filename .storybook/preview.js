@@ -1,3 +1,7 @@
+import './main.scss'
+// import '../src/globals.scss'
+
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {

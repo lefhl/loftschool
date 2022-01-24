@@ -16,7 +16,6 @@ export default {
   name: 'user-bar',
   components: {
     icon: Icon
-
   }
 }
 </script>

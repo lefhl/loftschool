@@ -34,7 +34,7 @@ export default {
     border: 1px solid rgba(27, 31, 35, 0.15);
     background-color: #FAFBFC;
     border-radius: 6px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     font-size: 14px;
 

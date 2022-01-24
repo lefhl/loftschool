@@ -7,8 +7,17 @@
 .headline {
 	display: flex;
 	justify-content: space-between;
+
+	// & /deep/ .logo {
+	// 	width: 170px;
+	// }
+	
 }
+
+
 
 .content {
 	margin-top: 37px;
 }
+
+

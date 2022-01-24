@@ -1,6 +1,6 @@
 <template>
   <div class="user">
-    <img :src="avatar" alt="" class="user__pic">
+    <img :src="avatar" alt="" :class="['user__pic', {user__pic_xs: size === 'xs'}]">
     <span class="user__name">{{username}}</span>
   </div>
 </template>
@@ -16,6 +16,9 @@ export default {
     username: {
       type: String,
       required: true
+    },
+    size: {
+      type: String
     }
   }
 }
@@ -32,6 +35,11 @@ export default {
       height: 44px;
       border-radius: 50%;
       object-fit: cover;
+
+      &_xs {
+        width: 32px;
+        height: 32px;
+      }
     }
 
     &__name {
