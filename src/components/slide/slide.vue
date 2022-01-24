@@ -102,6 +102,7 @@ export default {
 
       p {
         margin-bottom: 14px;
+        line-height: 1.6;
       }
     }
 
