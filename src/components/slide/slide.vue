@@ -1,39 +1,67 @@
 <template>
-  <div class="slide">
+  <div class="slide" :class="{active}">
     <div class="slide__header">
       <div class="slide__progress">
-        <x-progress :percent="70"/>
+        <x-progress :active="active" @onProgressFinish="$emit('OnProgressFinish', 'next')"/>
       </div>
       <user :avatar="avatar" :username="username" size="xs"/>
     </div>
     <div class="slide__content-wrap">
       <div class="slide__content">
-      <img class="slide__img" src="@assets/images/demo.png" alt="">
-      <p>
-        <strong>The easiest</strong>
-         way to get .NET 6 Preview 4 is to install the maui-check dotnet tool from CLI and follow the instructions.
-      </p>
-      <p>For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.</p>
-      <p>In Preview 4 we enable push/pop navigation with NavigationPage. We added a concrete implementation of IWindow, and completed porting ContentPage from Xamarin.Forms</p>
-      <p>For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.</p>
-      <p>For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.</p>
-      <p>For running on Mac you'll currently use your favorite text editor and terminal to edit and run apps. We expect Visual Studio for Mac .NET 6 support to begin arriving mid-year.</p>
+        <div class="loader" v-if="loading">
+          <spinner />
+        </div>
+        <template v-else>
+
+        <div v-if="data.content?.length" class="slide_content-inner" v-html="data.content"></div>
+        <placeholder v-else/>
+        </template>
     </div>
     </div>
     <footer class="slide__footer">
       <btn class="slide__btn">Follow</btn>
     </footer>
+    <template v-if="active">
+      <button @click="$emit('toggleSlide', 'prev')" v-show="btnsShown.includes('prev')" class="slide__toggle-btn">
+        <icon name="arrowPrev"/>
+      </button>
+      <button @click="$emit('toggleSlide', 'next')" v-show="btnsShown.includes('next') " class="slide__toggle-btn slide__next-btn">
+        <icon name="arrowNext"/>
+      </button>
+    </template>
   </div>
 </template>
 
 <script>
 import { user } from '@comp/user'
-import { progress } from '@comp/progress'
+import { xProgress } from '@comp/progress'
 import { btn } from '@comp/btn'
+import { spinner } from '@comp/spinner'
+import { placeholder } from '@comp/placeholder'
+import Icon from '@assets/icons/icon.vue'
 
 export default {
-  name: 'slide',
-  components: { user, xProgress: progress, btn },
+  name: 'storiesSlide',
+  components: { user, xProgress, btn, spinner, placeholder, icon: Icon },
+  emits: ['toggleSlide'],
+  props: {
+    data: {
+      type: Object,
+      required: true
+    },
+    active: {
+      type: Boolean,
+      default: false
+    },
+    loading: Boolean,
+    btnsShown: {
+      type: Array,
+      default: () => ['next', 'prev'],
+      validator (value) {
+        return value.every(item => item === 'next' || item === 'prev')
+      }
+    }
+  },
   data () {
     return {
       avatar: 'https://picsum.photos/200/300',
@@ -48,9 +76,21 @@ export default {
     border-radius: 8px;
     background-color: #fff;
     position: relative;
-    max-width: 375px;
+    width: 376px;
     padding-top: 80px;
     font-size: 14px;
+    position: relative;
+
+    &.active {
+      margin: 0 12px;
+    }
+
+    .loader {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
     &__header {
       position: absolute;
@@ -68,7 +108,8 @@ export default {
 
     &__content-wrap {
       position: relative;
-
+      min-height: 400px;
+      overflow: visible;
       &::after {
         content: "";
         height: 42px;
@@ -80,15 +121,17 @@ export default {
         position: absolute;
 
       }
+
     }
 
     &__content {
-      max-height: 500px;
+      height: 400px;
       overflow-y: auto;
       padding-left: 18px;
       padding-right: 15px;
       margin-right: 12px;
       scrollbar-width: thin;
+      transition: height .3s ease;
 
       &::-webkit-scrollbar {
         width: 5px;
@@ -103,6 +146,10 @@ export default {
       p {
         margin-bottom: 14px;
         line-height: 1.6;
+      }
+
+      .active & {
+        height: 500px;
       }
     }
 
@@ -122,6 +169,29 @@ export default {
       max-width: 270px;
       width: 100%;
       text-align: center;
+    }
+
+    &__toggle-btn {
+      position: absolute;
+      top: 50%;
+      transform: translate(-100%, -50%);
+      left: -20px;
+       path.arrow {
+        transition: fill .15s ease;
+      }
+
+      &:hover {
+        path.arrow {
+          fill: #31AE54;
+        }
+      }
+    }
+
+    &__next-btn {
+      left: auto;
+      right: -20px;
+      transform: translate(100%, -50%);
+      z-index: 10;
     }
   }
 </style>

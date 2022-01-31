@@ -2,7 +2,7 @@ import { slide } from './index.js'
 
 export default {
   title: 'slide',
-  component: { slide },
+  component: { slide }
 }
 
 const template = (args) => ({
@@ -16,4 +16,3 @@ const template = (args) => ({
 })
 
 export const Default = template.bind({})
-

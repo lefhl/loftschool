@@ -1,1 +1,1 @@
-export { default as slide } from './slide.vue'
+export { default as storiesSlide } from './slide.vue'

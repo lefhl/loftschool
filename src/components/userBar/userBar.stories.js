@@ -2,15 +2,7 @@ import { userBar } from './index.js'
 
 export default {
   title: 'userBar',
-  component: { userBar },
-  argTypes: {
-    stars: {
-      control: { type: 'number' }
-    },
-    forks: {
-      control: { type: 'number' }
-    }
-  }
+  component: { userBar }
 }
 
 const template = (args) => ({
@@ -24,8 +16,3 @@ const template = (args) => ({
 })
 
 export const Default = template.bind({})
-
-Default.args = {
-  stars: '123',
-  forks: '4'
-}

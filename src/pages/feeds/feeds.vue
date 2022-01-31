@@ -9,9 +9,8 @@
         <ul class="stories">
         <li v-for="s in stories" :key="s.id" class="stories__item">
           <story-user-item
-            :avatar="s.avatar"
-            :username="s.username"
-            @onPress="onPressStory"
+            :data="getStoryData(s)"
+            @click="gotoSliderStorie(s.id)"
           />
         </li>
       </ul>
@@ -29,14 +28,13 @@
 
 <script>
 import Icon from '@assets/icons/icon.vue'
-// import stories from './data.json'
 import { storyUserItem } from '@comp/storyUserItem'
 import { topline } from '@comp/topline'
 import { userBar } from '@comp/userBar'
 import { post } from '@comp/post'
 import { card } from '@comp/card'
 
-import * as api from '../../api'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'feeds',
@@ -50,7 +48,6 @@ export default {
   },
   data () {
     return {
-      stories: [],
       path: 'ProfilePic.png',
       posts: [
         { username: 'joshua_l', avatar: 'ProfilePic-1.png' },
@@ -59,25 +56,32 @@ export default {
     }
   },
   async created () {
-    try {
-      const { data } = await api.trendings.getTrendings()
-      this.stories = data.items.map(i => {
-        return {
-          username: i.owner.login,
-          avatar: i.owner.avatar_url,
-          id: i.owner.id
-        }
-      })
-    } catch (err) {
-      console.log(err)
-    }
+    this.getTrendings()
+  },
+  computed: {
+    ...mapState({
+      stories: state => state.trendings.data
+    })
   },
   methods: {
-    onPressStory () {
-      console.log('onPressStory')
-    },
+    ...mapActions({
+      getTrendings: 'trendings/getTrendings'
+    }),
+
     imagePath (name) {
       return require('./../../assets/images/' + name)
+    },
+    getStoryData (obj) {
+      return {
+        id: obj.id,
+        userAvatar: obj.owner?.avatar_url,
+        username: obj.owner?.login,
+        content: obj.readme
+      }
+    },
+    gotoSliderStorie (id) {
+      console.log('click')
+      this.$router.push({ name: 'stories', params: { id } })
     }
   }
 }

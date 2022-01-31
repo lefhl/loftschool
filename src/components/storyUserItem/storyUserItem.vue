@@ -1,7 +1,7 @@
 <template>
-  <div class="story" @click="$emit('onPress')">
-    <img :src="avatar" alt="" class="story__img">
-    <p class="story__text">{{username}}</p>
+  <div class="story" >
+    <img :src="data.userAvatar" alt="" class="story__img" >
+    <p class="story__text">{{data.username}}</p>
   </div>
 </template>
 
@@ -9,15 +9,12 @@
 export default {
   name: 'storyUserItem',
   props: {
-    avatar: {
-      type: String,
-      required: true
-    },
-    username: {
-      type: String,
+    data: {
+      type: Object,
       required: true
     }
   }
+
 }
 </script>
 
