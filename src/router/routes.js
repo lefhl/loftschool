@@ -7,11 +7,11 @@ const user = () => import('../pages/user/user.vue')
 
 export default [
   {
-    path: '/',
+    path: '/loftschool/',
     component: feeds
   },
   {
-    path: '/user/:id(\\d+)',
+    path: '/loftschool/user/:id(\\d+)',
     component: user,
     name: 'user',
     props: true,
@@ -22,7 +22,7 @@ export default [
     }]
   },
   {
-    path: '/stories',
+    path: '/loftschool/stories',
     component: storiesSlider,
     name: 'stories'
   },
