@@ -1,7 +1,15 @@
 <template>
   <div class="stories-slider">
-    <div class="stories-slider__container">
-      <ul class="stories" :style="{transform: `translateX(${-1 * slideIdx * 378       }px)`}">
+    <header class="stories-header">
+      <div class="x-container">
+        <div class="stories-logo">
+          <icon name="logo" />
+        </div>
+      <button class="stories-close"><icon name="close" /></button>
+      </div>
+    </header>
+    <div class="stories-slider__container" >
+      <ul class="stories" ref="slider">
         <li class="stories__item" v-for="(trend, idx) in trendings" :key="trend.id">
           <stories-slide
             :data="getStoryData(trend)"
@@ -20,10 +28,11 @@
 <script>
 import { storiesSlide } from '@comp/slide'
 import { mapState, mapActions } from 'vuex'
+import Icon from '@assets/icons/icon.vue'
 
 export default {
   name: 'storiesSlider',
-  components: { storiesSlide },
+  components: { storiesSlide, icon: Icon },
   data () {
     return {
       slideIdx: 0,
@@ -73,6 +82,7 @@ export default {
     async toggleSlide (direction) {
       if (this.slideIdx === this.trendings.length - 1 && direction === 'next') return
       this.slideIdx = this.slideIdx + (direction === 'prev' ? -1 : 1)
+      this.$refs.slider.style.transform = `translateX(${-1 * this.slideIdx * 378}px)`
       await this.fetchReadmeForActiveSlide()
     },
     getStoryData (obj) {
@@ -89,9 +99,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .stories-header {
+    position: fixed;
+    top: 53px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    .x-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .stories-logo {
+    width: 174px;
+  }
+
   .stories-slider {
+    overflow: hidden;
     background-color: #101010;
     height: 100vh;
+    position: relative;
+    padding-top: 50px;
   }
 
   .stories {
@@ -102,5 +132,18 @@ export default {
     height: 100vh;
     transition: .4s;
     gap: 24px;
+    @media (max-height: 900px) {
+    & /deep/ .slide {
+      .slide__content {
+        height: 300px;
+      }
+      &.active  {
+        .slide__content {
+          height: 350px;
+        }
+      }
+    }
+    }
   }
+
 </style>

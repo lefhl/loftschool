@@ -108,7 +108,6 @@ export default {
 
     &__content-wrap {
       position: relative;
-      min-height: 400px;
       overflow: visible;
       &::after {
         content: "";
