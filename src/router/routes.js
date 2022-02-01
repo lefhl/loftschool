@@ -1,33 +1,35 @@
-import { feeds } from '@/pages/feeds/'
-import { notFound } from '@/pages/notFound/'
-import { profile } from '@/pages/profile/'
-import { storiesSlider } from '@/pages/storiesSlider/'
+import { feeds } from "@/pages/feeds/";
+import { notFound } from "@/pages/notFound/";
+import { profile } from "@/pages/profile/";
+import { storiesSlider } from "@/pages/storiesSlider/";
 
-const user = () => import('../pages/user/user.vue')
+const user = () => import("../pages/user/user.vue");
 
 export default [
   {
-    path: '/loftschool/',
-    component: feeds
+    path: "/",
+    component: feeds,
   },
   {
-    path: '/loftschool/user/:id(\\d+)',
+    path: "/user/:id(\\d+)",
     component: user,
-    name: 'user',
+    name: "user",
     props: true,
-    children: [{
-      path: 'profile',
-      name: 'profile',
-      component: profile
-    }]
+    children: [
+      {
+        path: "profile",
+        name: "profile",
+        component: profile,
+      },
+    ],
   },
   {
-    path: '/loftschool/stories',
+    path: "/stories",
     component: storiesSlider,
-    name: 'stories'
+    name: "stories",
   },
   {
-    path: '/:pathMatch(.*)*',
-    component: notFound
-  }
-]
+    path: "/:pathMatch(.*)*",
+    component: notFound,
+  },
+];
