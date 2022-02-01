@@ -114,6 +114,9 @@ export default {
 
   .stories-logo {
     width: 174px;
+    & /deep/ path {
+      fill: #fff;
+    }
   }
 
   .stories-slider {
