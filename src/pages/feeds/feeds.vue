@@ -41,8 +41,10 @@ import { topline } from '@comp/topline'
 import { userBar } from '@comp/userBar'
 import { post } from '@comp/post'
 import { card } from '@comp/card'
+import * as api from '../../api'
 
 import { mapActions, mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'feeds',
@@ -68,6 +70,10 @@ export default {
   },
   async created () {
     this.is_loading = true
+    axios.defaults.headers.common.Authorization = `token ${localStorage.getItem('token')}`
+
+    const user = await api.trendings.getUser()
+    console.log(user)
     await this.getTrendings()
     this.is_loading = false
   },

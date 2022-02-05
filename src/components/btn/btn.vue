@@ -1,12 +1,26 @@
 <template>
-  <button class="btn">
-      <slot />
+  <button class="btn" :class="{loading, gray: theme === 'gray'}" >
+      <slot v-if="!loading"/>
+      <icon v-else name="loader" class="spinner"/>
   </button>
 </template>
 
 <script>
+import Icon from '@assets/icons/icon.vue'
+
 export default {
-  name: 'btn'
+  name: 'btn',
+  components: { icon: Icon },
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    theme: {
+      type: String,
+      default: 'green'
+    }
+  }
 }
 </script>
 
@@ -16,15 +30,29 @@ export default {
     padding: 11px 20px;
     font-weight: bold;
     font-size: 16px;
-    display: inline-block;
+    display: flex;  align-items: center;
+    justify-content: center;
+    height: 44px;
     color: #fff;
     border-radius: 5px;
-    font-family: 'Open Sans';
     line-height: 1.362;
-    transition: opacity .3s ease;
+    transition: background-color .23s;
+    font-family: 'Inter', 'Open Sans';
+
+    &.gray {
+      background-color: #9E9E9E;
+    }
 
     &:hover {
-      opacity: 0.7;
+      background-color: #9E9E9E;
+    }
+
+    &.loading {
+      background-color: #9E9E9E;
+      .spinner {
+        width: 21px;
+        height: 21px;
+      }
     }
   }
 </style>

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { makeRequest } from '../requests'
 
 const addStartingZero = (value) => value < 10 ? `0${value}` : value
@@ -22,3 +23,14 @@ export const getTrendings = (lang = 'javascript') => {
     url: `/search/repositories?${params}`
   })
 }
+
+export const starRepo = ({ repo, owner }) => makeRequest({
+  url: `/user/starred/${owner}/${repo}`,
+  method: 'put'
+})
+
+export const getUser = () => makeRequest({
+  url: '/user'
+})
+
+export const getToken = (params) => axios.post('https://webdev-api.loftschool.com/github', params)

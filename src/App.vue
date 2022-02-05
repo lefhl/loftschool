@@ -1,11 +1,16 @@
 <template>
   <router-view />
+  <x-footer />
 </template>
 
 <script>
+import { footer } from '@comp/footer'
 
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    xFooter: footer
+  }
 }
 </script>
 

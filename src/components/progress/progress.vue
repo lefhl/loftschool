@@ -18,7 +18,7 @@ export default {
     }
   },
   mounted () {
-    this.setTimeout()
+    // this.setTimeout()
     this.$nextTick().then(() => {
       setTimeout(() => {
         if (this.$props.active) {
@@ -47,7 +47,7 @@ export default {
   },
   watch: {
     active: function () {
-      this.setTimeout()
+      // this.setTimeout()
       if (this.$props.active) {
         this.$refs.bar.classList.add('activated')
         return

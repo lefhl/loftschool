@@ -18,6 +18,7 @@
             :loading="slideIdx === idx && loading"
             @toggleSlide="toggleSlide"
             @onProgressFinish="toggleSlide"
+            @onFollow="starRepo"
           />
         </li>
       </ul>
@@ -63,7 +64,8 @@ export default {
   methods: {
     ...mapActions({
       getTrendings: 'trendings/getTrendings',
-      fetchReadme: 'trendings/getReadme'
+      fetchReadme: 'trendings/getReadme',
+      starRepo: 'trendings/starRepo'
     }),
     async fetchReadmeForActiveSlide () {
       this.loading = true
@@ -91,7 +93,8 @@ export default {
         id: obj.id,
         userAvatar: obj.owner?.avatar_url,
         username: obj.owner?.login,
-        content: obj.readme
+        content: obj.readme,
+        following: obj.following
       }
     }
 

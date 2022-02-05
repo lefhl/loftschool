@@ -24,8 +24,15 @@
         </template>
       </div>
     </div>
-    <footer class="slide__footer">
-      <btn class="slide__btn">Follow</btn>
+    <footer class="slide__footer" >
+      <btn
+        :loading="data.following.loading"
+        :theme="data.following.status ? 'gray' : 'green'"
+        class="slide__btn"
+        @click="$emit('onFollow', data.id)"
+      >
+        {{data.following.status ? 'Follow' : 'Unfollow'}}
+      </btn>
     </footer>
     <template v-if="active">
       <button
