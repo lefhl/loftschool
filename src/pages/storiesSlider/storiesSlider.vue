@@ -2,10 +2,10 @@
   <div class="stories-slider">
     <header class="stories-header">
       <div class="x-container">
-        <div class="stories-logo">
+        <router-link to='/' class="stories-logo">
           <icon name="logo" />
-        </div>
-      <button class="stories-close"><icon name="close" /></button>
+        </router-link>
+      <router-link to='/' class="stories-close"><icon name="close" /></router-link>
       </div>
     </header>
     <div class="stories-slider__container" >
@@ -105,11 +105,16 @@ export default {
     left: 0;
     right: 0;
     width: 100%;
+    z-index: 10;
     .x-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+  }
+
+  .stories-close {
+    cursor: pointer;
   }
 
   .stories-logo {

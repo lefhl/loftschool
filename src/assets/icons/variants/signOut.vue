@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'sign-out'
+  name: 'signOut'
 }
 </script>
 

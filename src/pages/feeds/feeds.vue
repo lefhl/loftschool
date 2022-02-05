@@ -1,19 +1,27 @@
 <template>
   <topline>
     <template #headline>
-        <icon name="logo" class="logo" />
+        <icon :name="'logo'" class="logo" />
         <user-bar />
     </template>
     <template #content>
-      <div class="stories-wrapper">
-        <ul class="stories">
-        <li v-for="s in stories" :key="s.id" class="stories__item">
-          <story-user-item
-            :data="getStoryData(s)"
-            @click="gotoSliderStorie(s.id)"
-          />
-        </li>
-      </ul>
+      <div class="stories-wrapper" :class="{scrolled_right: is_right_scrolled, scrolled_left: is_left_scrolled}">
+        <div class="stories-scroll" v-dragscroll @dragscrollmove="handleScroll">
+          <ul class="stories" v-if='!is_loading'>
+            <li v-for="s in stories" :key="s.id" class="stories__item">
+              <story-user-item
+                :data="getStoryData(s)"
+              />
+            </li>
+          </ul>
+          <ul class="stories" v-else >
+            <li v-for="num in 16" :key="num" class="stories__item">
+              <story-user-item
+                :placeholder='is_loading'
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     </template>
   </topline>
@@ -52,11 +60,16 @@ export default {
       posts: [
         { username: 'joshua_l', avatar: 'ProfilePic-1.png' },
         { username: 'Camille', avatar: 'ProfilePic-2.png' }
-      ]
+      ],
+      is_loading: false,
+      is_right_scrolled: false,
+      is_left_scrolled: true
     }
   },
   async created () {
-    this.getTrendings()
+    this.is_loading = true
+    await this.getTrendings()
+    this.is_loading = false
   },
   computed: {
     ...mapState({
@@ -79,9 +92,13 @@ export default {
         content: obj.readme
       }
     },
-    gotoSliderStorie (id) {
-      console.log('click')
-      this.$router.push({ name: 'stories', params: { id } })
+    handleScroll ({ target }) {
+      const width = target.offsetWidth
+      const leftScroll = target.scrollLeft
+      const fullWidth = target.scrollWidth
+
+      this.is_right_scrolled = fullWidth - leftScroll - width - 80 < 0
+      this.is_left_scrolled = leftScroll - 80 < 0
     }
   }
 }
@@ -98,27 +115,53 @@ export default {
 
 .stories-wrapper {
   position: relative;
+  overflow: hidden;
+  cursor: grab;
+  padding: 0 2px;
+  margin: 0 -2px;
 
-  &::after {
+  &::after,
+  &::before {
     content: "";
     position: absolute;
-    height: 0;
     top: 0;
     bottom: 0;
     width: 100px;
-    background-image: linear-gradient(to right, rgba(#fafafa, 0.25) 50%, rgba(#fafafa, 1) 100%);
-    right: 0;
     height: 100%;
     pointer-events: none;
   }
+
+  &::after {
+    content: "";
+    background-image: linear-gradient(to right, rgba(#fafafa, 0.25) 50%, rgba(#fafafa, 1) 100%);
+    right: 0;
+  }
+
+  &::before {
+    content: "";
+    background-image: linear-gradient(to left, rgba(#fafafa, 0.25) 50%, rgba(#fafafa, 1) 100%);
+    left: 0;
+  }
+
+  &.scrolled_right::after {
+    display: none;
+  }
+
+  &.scrolled_left::before {
+    display: none;
+  }
+}
+
+.stories-scroll {
+  overflow-x: scroll;
+  margin-bottom: -20px;
 }
 
 .stories {
   display: flex;
   gap: 37px;
-  overflow-x: scroll;
   &__item {
-    flex-shrink: 0;
+    flex: 0 0 80px;
   }
 
 }

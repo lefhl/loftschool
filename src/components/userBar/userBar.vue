@@ -3,7 +3,7 @@
     <a href="/"><icon name="home" /></a>
     <img src="@assets/images/currentUser.png" alt="">
     <button type="button">
-    <icon name="sign-out" />
+    <icon :name="'signOut'" />
 
     </button>
   </div>
