@@ -97,8 +97,8 @@ export default {
       const leftScroll = target.scrollLeft
       const fullWidth = target.scrollWidth
 
-      this.is_right_scrolled = fullWidth - leftScroll - width - 80 < 0
-      this.is_left_scrolled = leftScroll - 80 < 0
+      this.is_right_scrolled = fullWidth - leftScroll - width - 20 < 0
+      this.is_left_scrolled = leftScroll - 20 < 0
     }
   }
 }
