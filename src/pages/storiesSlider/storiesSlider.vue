@@ -83,7 +83,7 @@ export default {
     async toggleSlide (direction) {
       if (this.slideIdx === this.trendings.length - 1 && direction === 'next') return
       this.slideIdx = this.slideIdx + (direction === 'prev' ? -1 : 1)
-      this.$refs.slider.style.transform = `translateX(${-1 * this.slideIdx * 378}px)`
+      this.$refs.slider.style.transform = `translateX(${-1 * this.slideIdx * 402}px)`
       await this.fetchReadmeForActiveSlide()
     },
     getStoryData (obj) {
