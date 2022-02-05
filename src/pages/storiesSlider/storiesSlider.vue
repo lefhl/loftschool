@@ -56,7 +56,8 @@ export default {
     await this.getTrendings()
     await this.fetchReadmeForActiveSlide()
     if (id) {
-      this.slideIdx = this.trendings.findIndex(item => +item.id === +id) || 0
+      this.slideIdx = this.trendings.findIndex(item => +item.id === +id) - 1 || 0
+      await this.toggleSlide('next')
     }
   },
   methods: {

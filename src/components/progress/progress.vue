@@ -1,6 +1,6 @@
 
 <template>
-  <div class="progress" :class="{active}" >
+  <div class="progress" ref="bar">
     <div class="progress__filled-part"></div>
   </div>
 </template>
@@ -17,9 +17,19 @@ export default {
       isActive: true
     }
   },
-
   mounted () {
     this.setTimeout()
+    this.$nextTick().then(() => {
+      setTimeout(() => {
+        if (this.$props.active) {
+          this.$refs.bar.classList.add('activated')
+        }
+      }, 0)
+    })
+  },
+
+  beforeUnmount () {
+    clearTimeout(this.timeout)
   },
   methods: {
     onProgressFinish () {
@@ -38,6 +48,11 @@ export default {
   watch: {
     active: function () {
       this.setTimeout()
+      if (this.$props.active) {
+        this.$refs.bar.classList.add('activated')
+        return
+      }
+      this.$refs.bar.classList.remove('activated')
     }
   }
 }
@@ -56,7 +71,7 @@ export default {
     height: 2px;
     width: 0;
 
-    .active &{
+    .activated & {
       width: 100%;
       transition: width 3s ease;
 
