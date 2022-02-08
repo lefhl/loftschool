@@ -27,11 +27,11 @@
     <footer class="slide__footer" >
       <btn
         :loading="data.following.loading"
-        :theme="data.following.status ? 'gray' : 'green'"
+        :theme="data.following.status ?  'grey' : 'green'"
         class="slide__btn"
-        @click="$emit('onFollow', data.id)"
+        @click="$emit(data.following.status ? 'onUnFollow' : 'onFollow', data.id)"
       >
-        {{data.following.status ? 'Follow' : 'Unfollow'}}
+        {{data.following.status ? 'Unfollow' : 'Follow'}}
       </btn>
     </footer>
     <template v-if="active">
@@ -64,7 +64,7 @@ import Icon from '@assets/icons/icon.vue'
 export default {
   name: 'storiesSlide',
   components: { user, xProgress, btn, spinner, placeholder, icon: Icon },
-  emits: ['toggleSlide'],
+  emits: ['toggleSlide', 'onFollow', 'onUnFollow'],
   props: {
     data: {
       type: Object,

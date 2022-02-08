@@ -1,22 +1,30 @@
 <template>
   <div class="card">
     <div class="card__title-wrap">
-      <h2 class="card__title">Vue.js</h2>
+      <h2 class="card__title">{{data.name}}</h2>
     </div>
-      <div class="card__content"><b>JavaScript</b> framework for building interactive web applications ⚡</div>
+      <div class="card__content">{{data.description}} </div>
       <div class="card__stats">
-        <stats :stars="'156k'" :forks="4"/>
+        <stats :stars="data.stargazers_count" :forks="data.forks"/>
       </div>
   </div>
 </template>
 
 <script>
 import { stats } from '@comp/stats'
+
 export default {
   name: 'card',
+  props: {
+    data: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     stats
   }
+
 }
 </script>
 

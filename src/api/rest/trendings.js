@@ -24,13 +24,26 @@ export const getTrendings = (lang = 'javascript') => {
   })
 }
 
-export const starRepo = ({ repo, owner }) => makeRequest({
+export const starRepo = ({ owner, repo }) => makeRequest({
   url: `/user/starred/${owner}/${repo}`,
   method: 'put'
 })
 
+export const unstarRepo = ({ owner, repo }) => makeRequest({
+  url: `/user/starred/${owner}/${repo}`,
+  method: 'delete'
+})
+
 export const getUser = () => makeRequest({
   url: '/user'
+})
+
+export const getStarredRepos = (id) => makeRequest({
+  url: `/users/${id}/starred`
+})
+
+export const getIssuesByRepo = ({ owner, repo }) => makeRequest({
+  url: `/repos/${owner}/${repo}/issues`
 })
 
 export const getToken = (params) => axios.post('https://webdev-api.loftschool.com/github', params)

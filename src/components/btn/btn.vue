@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="{loading, gray: theme === 'gray'}" >
+  <button class="btn" :class="{loading, grey: theme === 'grey'}" >
       <slot v-if="!loading"/>
       <icon v-else name="loader" class="spinner"/>
   </button>
@@ -39,8 +39,11 @@ export default {
     transition: background-color .23s;
     font-family: 'Inter', 'Open Sans';
 
-    &.gray {
+    &.grey {
       background-color: #9E9E9E;
+      &:hover {
+        background-color: #31AE54;
+      }
     }
 
     &:hover {

@@ -19,6 +19,7 @@
             @toggleSlide="toggleSlide"
             @onProgressFinish="toggleSlide"
             @onFollow="starRepo"
+            @onUnFollow="unstarRepo"
           />
         </li>
       </ul>
@@ -65,7 +66,8 @@ export default {
     ...mapActions({
       getTrendings: 'trendings/getTrendings',
       fetchReadme: 'trendings/getReadme',
-      starRepo: 'trendings/starRepo'
+      starRepo: 'trendings/starRepo',
+      unstarRepo: 'trendings/unstarRepo'
     }),
     async fetchReadmeForActiveSlide () {
       this.loading = true

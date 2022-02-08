@@ -6,4 +6,11 @@
 		color: #262626;
 		width: 32px;
 	}
+
+	&__user-pic {
+		width: 37px;
+		height: 37px;
+		object-fit: cover;
+		border-radius: 50%;
+	}
 }

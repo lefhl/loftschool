@@ -1,6 +1,6 @@
 <template>
   <div class="placeholder">
-    <div class="placeholder__img"></div>
+    <div class="placeholder__img" v-if="withImage"></div>
     <div class="placeholder__block" v-for="c, idx in count" :key="idx">
       <div class="placeholder__item"></div>
       <div class="placeholder__item placeholder__item_long"></div>
@@ -16,6 +16,10 @@ export default {
     count: {
       type: Number,
       default: 2
+    },
+    withImage: {
+      type: Boolean,
+      default: true
     }
   }
 }

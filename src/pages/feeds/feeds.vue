@@ -1,8 +1,8 @@
 <template>
   <topline>
     <template #headline>
-        <icon :name="'logo'" class="logo" />
-        <user-bar />
+        <icon :name="'logo'" class="logo"/>
+        <user-bar :avatar="user?.avatar_url || ''"/>
     </template>
     <template #content>
       <div class="stories-wrapper" :class="{scrolled_right: is_right_scrolled, scrolled_left: is_left_scrolled}">
@@ -26,9 +26,9 @@
     </template>
   </topline>
   <ul class="x-container posts">
-    <li v-for="(post, idx) in posts" :key="idx" class="posts__item">
-      <post :username="post.username" :avatar="imagePath(post.avatar)">
-        <template #card> <card /></template>
+    <li v-for="(post, idx) in likedRepos" :key="idx" class="posts__item">
+      <post :data="post">
+        <template #card> <card :data="post"/></template>
       </post>
     </li>
   </ul>
@@ -41,7 +41,7 @@ import { topline } from '@comp/topline'
 import { userBar } from '@comp/userBar'
 import { post } from '@comp/post'
 import { card } from '@comp/card'
-import * as api from '../../api'
+// import * as api from '../../api'
 
 import { mapActions, mapState } from 'vuex'
 import axios from 'axios'
@@ -70,26 +70,31 @@ export default {
   },
   async created () {
     this.is_loading = true
-    axios.defaults.headers.common.Authorization = `token ${localStorage.getItem('token')}`
+    /* eslint-disable */
+    axios.defaults.headers.common['Authorization'] = `token ${localStorage.getItem('token')}`
 
-    const user = await api.trendings.getUser()
-    console.log(user)
-    await this.getTrendings()
+    await Promise.all([
+      this.getTrendings(),
+      this.getUser()
+    ])
+    await this.getLikedRepos()
+
+
     this.is_loading = false
   },
   computed: {
     ...mapState({
-      stories: state => state.trendings.data
-    })
+      stories: state => state.trendings.data,
+      user: state => state.trendings.user,
+      likedRepos: state => state.trendings.likedRepos,
+    }),
   },
   methods: {
     ...mapActions({
-      getTrendings: 'trendings/getTrendings'
+      getTrendings: 'trendings/getTrendings',
+      getUser: 'trendings/getUser',
+      getLikedRepos: 'trendings/getLikedRepos',
     }),
-
-    imagePath (name) {
-      return require('./../../assets/images/' + name)
-    },
     getStoryData (obj) {
       return {
         id: obj.id,

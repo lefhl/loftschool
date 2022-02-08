@@ -1,5 +1,5 @@
 <template>
-  <div class="auth">
+  <div class="auth" v-if="is_created">
     <div class="x-container auth__wrapper">
       <div class="auth__logo"><icon name='logo' /></div>
       <div class="auth__subscription">
@@ -20,11 +20,27 @@ import Icon from '@assets/icons/icon.vue'
 import { btn } from '@comp/btn/'
 import * as api from '../../api'
 import { clientId, clientSecret } from '@/../env.js'
+import axios from 'axios'
 
 export default {
   name: 'auth',
   components: { icon: Icon, btn },
+  data () {
+    return {
+      is_created: false
+    }
+  },
   async created () {
+    try {
+      axios.defaults.headers.common.Authorization = `token ${localStorage.getItem('token')}`
+      const resp = await api.trendings.getUser()
+      if (resp.status === 200) {
+        this.$router.replace({ name: 'feeds' })
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
     const code = new URLSearchParams(window.location.search).get('code')
 
     if (code) {
@@ -43,6 +59,8 @@ export default {
         console.log('Ошибка:', err)
       }
     }
+
+    this.is_created = true
   },
   methods: {
     async getCode () {
@@ -50,7 +68,7 @@ export default {
 
       const params = new URLSearchParams()
       params.append('client_id', clientId)
-      params.append('scope', 'repo:status read:user')
+      params.append('scope', 'repo:status public_repo read:user')
       window.location.href = `${githubAuthApi}?${params}`
     }
   }
