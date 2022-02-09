@@ -10,7 +10,7 @@
     </header>
     <div class="stories-slider__container" >
       <ul class="stories" ref="slider">
-        <li class="stories__item" v-for="(trend, idx) in trendings" :key="trend.id">
+        <li class="stories__item" v-for="(trend, idx) in notLikedRepos" :key="trend.id">
           <stories-slide
             :data="getStoryData(trend)"
             :active="slideIdx === idx"
@@ -29,7 +29,7 @@
 
 <script>
 import { storiesSlide } from '@comp/slide'
-import { mapState, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Icon from '@assets/icons/icon.vue'
 
 export default {
@@ -43,13 +43,13 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      trendings: state => state.trendings.data
+    ...mapGetters('trendings', {
+      notLikedRepos: 'notLikedRepos'
     }),
     activeBtns () {
       if (!this.btnsShown) return []
       if (this.slideIdx === 0) return ['next']
-      if (this.slideIdx === this.trendings.length - 1) return ['prev']
+      if (this.slideIdx === this.notLikedRepos.length - 1) return ['prev']
       return ['next', 'prev']
     }
   },
@@ -58,7 +58,7 @@ export default {
     await this.getTrendings()
     await this.fetchReadmeForActiveSlide()
     if (id) {
-      this.slideIdx = this.trendings.findIndex(item => +item.id === +id) - 1 || 0
+      this.slideIdx = this.notLikedRepos.findIndex(item => +item.id === +id) - 1 || 0
       await this.toggleSlide('next')
     }
   },
@@ -72,7 +72,7 @@ export default {
     async fetchReadmeForActiveSlide () {
       this.loading = true
       this.btnsShown = false
-      const { id, owner, name } = this.trendings[this.slideIdx]
+      const { id, owner, name } = this.notLikedRepos[this.slideIdx]
 
       try {
         await this.fetchReadme({ id, owner: owner.login, repo: name })
@@ -85,7 +85,7 @@ export default {
       }
     },
     async toggleSlide (direction) {
-      if (this.slideIdx === this.trendings.length - 1 && direction === 'next') return
+      if (this.slideIdx === this.notLikedRepos.length - 1 && direction === 'next') return
       this.slideIdx = this.slideIdx + (direction === 'prev' ? -1 : 1)
       this.$refs.slider.style.transform = `translateX(${-1 * this.slideIdx * 402}px)`
       await this.fetchReadmeForActiveSlide()

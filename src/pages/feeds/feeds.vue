@@ -8,7 +8,7 @@
       <div class="stories-wrapper" :class="{scrolled_right: is_right_scrolled, scrolled_left: is_left_scrolled}">
         <div class="stories-scroll" v-dragscroll @dragscrollmove="handleScroll">
           <ul class="stories" v-if='!is_loading'>
-            <li v-for="s in stories" :key="s.id" class="stories__item">
+            <li v-for="s in notLikedRepos" :key="s.id" class="stories__item">
               <story-user-item
                 :data="getStoryData(s)"
               />
@@ -43,7 +43,7 @@ import { post } from '@comp/post'
 import { card } from '@comp/card'
 // import * as api from '../../api'
 
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
@@ -79,15 +79,18 @@ export default {
     ])
     await this.getLikedRepos()
 
-
     this.is_loading = false
   },
+
   computed: {
     ...mapState({
       stories: state => state.trendings.data,
       user: state => state.trendings.user,
       likedRepos: state => state.trendings.likedRepos,
     }),
+    ...mapGetters('trendings', {
+      notLikedRepos: 'notLikedRepos'
+    })
   },
   methods: {
     ...mapActions({

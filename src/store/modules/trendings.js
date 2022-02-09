@@ -36,9 +36,15 @@ export default {
         return repo
       })
     },
-    SET_USER: (state, payload) => { state.user = payload },
-    SET_LIKED_REPOS: (state, payload) => { state.likedRepos = payload },
-    SET_REPO_ISSUES: (state, payload) => { state.issues[payload.repo] = payload.data }
+    SET_USER: (state, payload) => {
+      state.user = payload
+    },
+    SET_LIKED_REPOS: (state, payload) => {
+      state.likedRepos = payload
+    },
+    SET_REPO_ISSUES: (state, payload) => {
+      state.issues[payload.repo] = payload.data
+    }
   },
   getters: {
     getRepoById: (state) => (id) => {
@@ -46,8 +52,11 @@ export default {
     },
     getUserLogin: (state) => state.user.login,
     likedRepos: (state) => state.likedRepos,
-    repoIssues: (state) => (repo) => state.issues[repo]
-
+    repoIssues: (state) => (repo) => state.issues[repo],
+    notLikedRepos: (state) => {
+      const ids = state.likedRepos.map(item => item.id)
+      return state.data.filter(item => !ids.includes(item.id))
+    }
   },
   actions: {
     async getTrendings ({ commit }) {
@@ -157,7 +166,9 @@ export default {
 
     async getLikedRepos ({ commit, getters }) {
       try {
-        const { data } = await api.trendings.getStarredRepos(getters.getUserLogin)
+        const { data } = await api.trendings.getStarredRepos(
+          getters.getUserLogin
+        )
         commit('SET_LIKED_REPOS', data)
       } catch (err) {
         console.log(err)
