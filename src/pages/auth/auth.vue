@@ -1,5 +1,5 @@
 <template>
-  <div class="auth" v-if="is_created">
+  <div class="auth">
     <div class="x-container auth__wrapper">
       <div class="auth__logo"><icon name='logo' /></div>
       <div class="auth__subscription">
@@ -25,11 +25,6 @@ import axios from 'axios'
 export default {
   name: 'auth',
   components: { icon: Icon, btn },
-  data () {
-    return {
-      is_created: false
-    }
-  },
   async created () {
     try {
       axios.defaults.headers.common.Authorization = `token ${localStorage.getItem('token')}`
@@ -54,7 +49,8 @@ export default {
         const { token } = responce.data
 
         localStorage.setItem('token', token)
-        this.$router.replace({ name: 'feeds' })
+        // Избавляемся от квери, который не убирается в связке createWebHashHistory
+        window.location.href = '/'
       } catch (err) {
         console.log('Ошибка:', err)
       }

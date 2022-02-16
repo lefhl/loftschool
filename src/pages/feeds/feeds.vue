@@ -44,7 +44,6 @@ import { card } from '@comp/card'
 // import * as api from '../../api'
 
 import { mapActions, mapState, mapGetters } from 'vuex'
-import axios from 'axios'
 
 export default {
   name: 'feeds',
@@ -70,8 +69,6 @@ export default {
   },
   async created () {
     this.is_loading = true
-    /* eslint-disable */
-    axios.defaults.headers.common['Authorization'] = `token ${localStorage.getItem('token')}`
 
     await Promise.all([
       this.getTrendings(),
@@ -86,7 +83,7 @@ export default {
     ...mapState({
       stories: state => state.trendings.data,
       user: state => state.trendings.user,
-      likedRepos: state => state.trendings.likedRepos,
+      likedRepos: state => state.trendings.likedRepos
     }),
     ...mapGetters('trendings', {
       notLikedRepos: 'notLikedRepos'
@@ -96,7 +93,7 @@ export default {
     ...mapActions({
       getTrendings: 'trendings/getTrendings',
       getUser: 'trendings/getUser',
-      getLikedRepos: 'trendings/getLikedRepos',
+      getLikedRepos: 'trendings/getLikedRepos'
     }),
     getStoryData (obj) {
       return {
@@ -168,7 +165,7 @@ export default {
 
 .stories-scroll {
   overflow-x: scroll;
-  margin-bottom: -20px;
+  margin-bottom: -19px;
 }
 
 .stories {

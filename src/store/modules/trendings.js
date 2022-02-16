@@ -44,6 +44,9 @@ export default {
     },
     SET_REPO_ISSUES: (state, payload) => {
       state.issues[payload.repo] = payload.data
+    },
+    SET_ACTUALLY_FOLLOWING: (state, payload) => {
+      state.following = payload
     }
   },
   getters: {
@@ -184,6 +187,11 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+
+    async getFollowing ({ commit, getters }) {
+      const { data } = await api.trendings.getFollowing()
+      commit('SET_ACTUALLY_FOLLOWING', data)
     }
   }
 }

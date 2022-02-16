@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 
 import * as api from '../api'
-import axios from 'axios'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -10,21 +9,15 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name === 'auth') {
-    next()
-    return
-  }
+  const authRoute = to.name === 'auth'
 
   try {
-    axios.defaults.headers.common.Authorization = `token ${localStorage.getItem('token')}`
-    const resp = await api.trendings.getUser()
-    if (to.name === 'auth' && resp.status === 200) {
-      next({ name: 'feeds' })
-    }
-    if (resp.status === 401) throw new Error('Вы не авторизованы')
-    next()
+    await api.trendings.getUser()
+    next(authRoute ? { name: 'feeds' } : null)
   } catch (err) {
-    next({ name: 'auth' })
+    if (err.response.status === 401) {
+      next(authRoute ? null : { name: 'auth' })
+    }
   }
 })
 

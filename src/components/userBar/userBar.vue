@@ -1,7 +1,9 @@
 <template>
   <div class="icons">
-    <a href="/"><icon name="home" /></a>
-    <img :src="avatar" alt="" class="icons__user-pic">
+    <router-link :to="{name: 'feeds'}"><icon name="home" /></router-link>
+    <router-link :to="{name: 'repos'}">
+      <img :src="avatar" alt="" class="icons__user-pic">
+    </router-link>
     <button type="button" @click="signOut">
       <icon :name="'signOut'" />
     </button>
@@ -10,7 +12,6 @@
 
 <script>
 import Icon from '@assets/icons/icon.vue'
-import axios from 'axios'
 
 export default {
   name: 'user-bar',
@@ -26,7 +27,6 @@ export default {
   methods: {
     signOut () {
       localStorage.removeItem('token')
-      axios.defaults.headers.common.Authorization = ''
       this.$router.push('auth')
     }
   }

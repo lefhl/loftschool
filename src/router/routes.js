@@ -1,10 +1,10 @@
 import { feeds } from '@/pages/feeds/'
 import { notFound } from '@/pages/notFound/'
-import { profile } from '@/pages/profile/'
 import { storiesSlider } from '@/pages/storiesSlider/'
 import { auth } from '@/pages/auth/'
-
-const user = () => import('../pages/user/user.vue')
+import { user } from '@/pages/user/'
+import repos from '@/pages/user/tabs/repos.vue'
+import following from '@/pages/user/tabs/following.vue'
 
 export default [
   {
@@ -13,15 +13,19 @@ export default [
     name: 'feeds'
   },
   {
-    path: '/user/:id(\\d+)',
+    path: '/user',
     component: user,
     name: 'user',
-    props: true,
     children: [
       {
-        path: 'profile',
-        name: 'profile',
-        component: profile
+        path: '',
+        name: 'repos',
+        component: repos
+      },
+      {
+        path: 'following',
+        name: 'following',
+        component: following
       }
     ]
   },

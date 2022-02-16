@@ -46,4 +46,8 @@ export const getIssuesByRepo = ({ owner, repo }) => makeRequest({
   url: `/repos/${owner}/${repo}/issues`
 })
 
+export const getFollowing = () => makeRequest({
+  url: '/user/following'
+})
+
 export const getToken = (params) => axios.post('https://webdev-api.loftschool.com/github', params)
