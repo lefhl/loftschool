@@ -11,8 +11,11 @@
           <div class="user__type">{{user.type}}</div>
         </div>
       </div>
-      <btn>
-         following
+      <btn
+        :theme="user?.isFollowing ?  'grey' : 'green'"
+        @click="toggleFollowing(user.login, user?.isFollowing)"
+      >
+        {{user.isFollowing ? 'Unfollow' : 'Follow'}}
       </btn>
     </div>
   </div>
@@ -30,14 +33,20 @@ export default {
       likedRepos,
       following,
       user,
-      getFollowing
+      getFollowing,
+      followUser,
+      unfollowUser,
+      toggleFollowing
     } = useUser()
 
     return {
       likedRepos,
       following,
       user,
-      getFollowing
+      getFollowing,
+      followUser,
+      unfollowUser,
+      toggleFollowing
     }
   },
 

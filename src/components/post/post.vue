@@ -11,10 +11,11 @@
 
     <div class="post__comments" v-show="isSpoilerOpen">
       <placeholder v-if="!issues" :count="1" :withImage="false"/>
-      <div v-else class="post__comment" v-for="(issue, idx) in issues" :key="idx">
+      <issues v-else :items="issues" />
+      <!-- <div v-else class="post__comment" v-for="(issue, idx) in issues" :key="idx">
         <b>{{issue.user.login}}</b>
         <span>{{issue.body}}</span>
-      </div>
+      </div> -->
     </div>
 
     <div class="post__date">15 may</div>
@@ -25,6 +26,7 @@
 import { toggler } from '@comp/toggler'
 import { user } from '@comp/user'
 import { placeholder } from '@comp/placeholder'
+import { issues } from '@comp/issues'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -38,7 +40,8 @@ export default {
   components: {
     toggler,
     user,
-    placeholder
+    placeholder,
+    issues
   },
   data () {
     return {
@@ -85,13 +88,6 @@ export default {
     }
     &__comments {
       padding-top: 10px;
-    }
-    &__comment {
-      margin-bottom: 6px;
-      font-size: 14px;
-      b {
-        margin-right: 8px;
-      }
     }
     &__date {
       font-size: 12px;

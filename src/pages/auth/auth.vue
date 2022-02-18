@@ -64,7 +64,7 @@ export default {
 
       const params = new URLSearchParams()
       params.append('client_id', clientId)
-      params.append('scope', 'repo:status public_repo read:user')
+      params.append('scope', 'repo:status public_repo read:user user:follow')
       window.location.href = `${githubAuthApi}?${params}`
     }
   }

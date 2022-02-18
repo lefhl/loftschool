@@ -51,3 +51,16 @@ export const getFollowing = () => makeRequest({
 })
 
 export const getToken = (params) => axios.post('https://webdev-api.loftschool.com/github', params)
+
+export const followUser = (username) => makeRequest({
+  url: `/user/following/${username}`,
+  method: 'put',
+  headers: {
+    'content-length': 0
+  }
+})
+
+export const unfollowUser = (username) => makeRequest({
+  url: `/user/following/${username}`,
+  method: 'delete'
+})

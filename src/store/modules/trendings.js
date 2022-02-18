@@ -46,7 +46,16 @@ export default {
       state.issues[payload.repo] = payload.data
     },
     SET_ACTUALLY_FOLLOWING: (state, payload) => {
+      payload.map(item => {
+        item.isFollowing = true
+        return item
+      })
       state.following = payload
+    },
+    TOGGLE_FOLLOWING_USER: (state, { username, isFollowing }) => {
+      const changedItemIdx = state.following.findIndex(item => item.login === username)
+
+      state.following[changedItemIdx].isFollowing = isFollowing
     }
   },
   getters: {
@@ -192,6 +201,22 @@ export default {
     async getFollowing ({ commit, getters }) {
       const { data } = await api.trendings.getFollowing()
       commit('SET_ACTUALLY_FOLLOWING', data)
+    },
+
+    async followUser ({ commit, getters }, username) {
+      const { status } = await api.trendings.followUser(username)
+      if (status === 204) {
+        commit('TOGGLE_FOLLOWING_USER', { username, isFollowing: true })
+      }
+    },
+
+    async unfollowUser ({ commit, getters }, username) {
+      const { status } = await api.trendings.unfollowUser(username)
+
+      if (status === 204) {
+        commit('TOGGLE_FOLLOWING_USER', { username, isFollowing: false })
+      }
     }
+
   }
 }
