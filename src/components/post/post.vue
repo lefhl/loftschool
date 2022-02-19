@@ -1,17 +1,15 @@
 <template>
   <div class="post">
     <div class="post__user">
-      <user :avatar="data.owner?.avatar_url" :username="data.owner.login"/>
+      <user :avatar="data.owner?.avatar_url" :username="data.owner.login" />
     </div>
     <div class="post__card">
       <slot name="card" />
     </div>
 
-    <toggler @toggle="handleToggle"/>
+    <div class="post__comments">
 
-    <div class="post__comments" v-show="isSpoilerOpen">
-      <placeholder v-if="!issues" :count="1" :withImage="false"/>
-      <issues v-else :items="issues" />
+      <issues :loading="issuesloading" :items="issue_items" @toggleVisibility="handleToggle"/>
       <!-- <div v-else class="post__comment" v-for="(issue, idx) in issues" :key="idx">
         <b>{{issue.user.login}}</b>
         <span>{{issue.body}}</span>
@@ -23,9 +21,7 @@
 </template>
 
 <script>
-import { toggler } from '@comp/toggler'
 import { user } from '@comp/user'
-import { placeholder } from '@comp/placeholder'
 import { issues } from '@comp/issues'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -38,28 +34,23 @@ export default {
     }
   },
   components: {
-    toggler,
     user,
-    placeholder,
     issues
   },
+
   data () {
     return {
-      isSpoilerOpen: false,
-      comments: [
-        { name: 'joshua_l', comment: 'Enable performance measuring in production, at the user\'s request' },
-        { name: 'Camille', comment: 'It\'s Impossible to Rename an Inherited Slot' },
-        { name: 'Marselle', comment: 'transition-group with flex parent causes removed items to fly' }
-      ]
+      issuesloading: false
     }
   },
+
   computed: {
     ...mapGetters('trendings', {
       repoIssues: 'repoIssues'
     }),
-    issues () {
+    issue_items () {
       const issues = this.repoIssues(this.$props.data.name)
-      if (!issues) return false
+      if (!issues) return []
       return issues
     }
   },
@@ -68,33 +59,34 @@ export default {
       getIssuesByRepo: 'trendings/getIssuesByRepo'
     }),
     async handleToggle () {
-      this.isSpoilerOpen = !this.isSpoilerOpen
+      this.issuesloading = true
       await this.getIssuesByRepo({
         owner: this.$props.data.owner.login,
         repo: this.$props.data.name
       })
+      this.issuesloading = false
     }
   }
 }
 </script>
 
 <style lang="scss">
-  .post {
-    &__user {
-      margin-bottom: 16px;
-    }
-    &__card {
-      margin-bottom: 18px;
-    }
-    &__comments {
-      padding-top: 10px;
-    }
-    &__date {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 10%;
-      color: rgba(#000, 0.4);
-      margin-top: 10px;
-    }
+.post {
+  &__user {
+    margin-bottom: 16px;
   }
+  &__card {
+    margin-bottom: 18px;
+  }
+  &__comments {
+    padding-top: 10px;
+  }
+  &__date {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 10%;
+    color: rgba(#000, 0.4);
+    margin-top: 10px;
+  }
+}
 </style>

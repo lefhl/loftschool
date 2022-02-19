@@ -1,8 +1,19 @@
 /* eslint-disable */
-import toggler from "./../issues.vue";
-import { shallowMount } from "@vue/test-utils";
+import issues from "./../issues.vue";
+import toggler from "./../../toggler/toggler.vue";
+import { mount } from "@vue/test-utils";
 
-describe("Issues", () => {
+let wrapper;
+
+beforeEach(() => {
+
+})
+
+// afterEach(() => {
+//   wrapper.destroy()
+// })
+
+describe("Issues",  () => {
   const items = [
     {
       user: {
@@ -18,13 +29,13 @@ describe("Issues", () => {
     }
   ]
 
-  const wrapper = shallowMount(toggler, {
-    props: {items}
+  wrapper = mount(issues, {
+    props: {items, isVisible: true, loading: false}
   });
 
-  it("Пропсы уходят, список рендерится", () => {
+  it("Пропсы уходят, список рендерится", async () => {
 
-    const itemsList = wrapper.findAll('.issues__item');
+    const itemsList = await wrapper.findAll('.issues__item');
 
     expect(itemsList.length).toBe(items.length);
     expect(itemsList[0].find('b').text()).toBe(items[0].user.login);
@@ -33,4 +44,16 @@ describe("Issues", () => {
     expect(itemsList[1].find('span').text()).toBe(items[1].body);
 
   });
+
+  it("Кнопка работает, текст меняется", async () => {
+    const toggler_component = await wrapper.findComponent(toggler)
+
+    expect(toggler_component.exists()).toBe(true)
+
+    await toggler_component.find('button').trigger('click')
+    expect(toggler_component.find('span').text()).toBe('Hide issues')
+    await toggler_component.find('button').trigger('click')
+    expect(toggler_component.find('span').text()).toBe('View issues')
+
+  })
 });
