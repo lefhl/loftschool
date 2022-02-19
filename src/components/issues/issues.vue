@@ -42,7 +42,9 @@ export default {
   methods: {
     toggleVisibility (state) {
       this.isVisible = state
-      this.$emit('toggleVisibility', state)
+      if (this.isVisible && this.$props.items.length === 0) {
+        this.$emit('toggleVisibility', state)
+      }
     }
   }
 

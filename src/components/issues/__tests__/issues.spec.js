@@ -34,7 +34,6 @@ describe("Issues",  () => {
   });
 
   it("Пропсы уходят, список рендерится", async () => {
-
     const itemsList = await wrapper.findAll('.issues__item');
 
     expect(itemsList.length).toBe(items.length);
@@ -45,7 +44,13 @@ describe("Issues",  () => {
 
   });
 
+  it("Нет повторных запросов на сервер, если данные уже загружены", () => {
+    expect(wrapper.emitted.toggleVisibility).toBeUndefined;
+  })
+
   it("Кнопка работает, текст меняется", async () => {
+
+
     const toggler_component = await wrapper.findComponent(toggler)
 
     expect(toggler_component.exists()).toBe(true)
@@ -56,4 +61,18 @@ describe("Issues",  () => {
     expect(toggler_component.find('span').text()).toBe('View issues')
 
   })
+
+  it("Кнопка эмитит", async () => {
+    wrapper = await mount(issues, {
+      props: {items: [], isVisible: true, loading: false}
+    });
+    const toggler_component = await wrapper.findComponent(toggler)
+
+    await toggler_component.find('button').trigger('click')
+
+    expect(wrapper.emitted('toggleVisibility').length).toBe(1);
+
+  })
+
+
 });
